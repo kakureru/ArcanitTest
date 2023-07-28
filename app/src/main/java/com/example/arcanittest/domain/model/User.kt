@@ -1,4 +1,8 @@
 package com.example.arcanittest.domain.model
 
-class User {
-}
+data class User(
+    val id: Int,
+    val avatarUrl: String,
+    val login: String,
+    val score: String,
+)

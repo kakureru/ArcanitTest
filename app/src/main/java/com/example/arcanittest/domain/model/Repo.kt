@@ -1,4 +1,8 @@
 package com.example.arcanittest.domain.model
 
-class Repo {
-}
+data class Repo(
+    val id: Int,
+    val name: String,
+    val forksCount: Int,
+    val description: String,
+)

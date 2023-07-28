@@ -1,4 +1,17 @@
 package com.example.arcanittest.app.presentation.screens.search.model
 
-class RepoItem {
-}
+import com.example.arcanittest.domain.model.Repo
+
+data class RepoItem(
+    val id: Int,
+    val name: String,
+    val forksCount: String,
+    val description: String,
+)
+
+fun Repo.toUI() = RepoItem(
+    id = id,
+    name = name,
+    forksCount = forksCount.toString(),
+    description = description,
+)
