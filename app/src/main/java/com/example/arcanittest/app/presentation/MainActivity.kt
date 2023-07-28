@@ -1,7 +1,8 @@
-package com.example.arcanittest
+package com.example.arcanittest.app.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.arcanittest.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
