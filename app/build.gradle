@@ -48,4 +48,6 @@ dependencies {
     implementation deps.coil
 
     implementation deps.cicerone
+
+    implementation deps.koin
 }

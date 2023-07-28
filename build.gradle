@@ -21,6 +21,7 @@ buildscript {
             'logginginterceptor': "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
             'mockwebserver': "com.squareup.okhttp3:mockwebserver:${versions.okhttp}",
         ],
+        'koin': 'io.insert-koin:koin-android:3.4.3',
         'coil': 'io.coil-kt:coil:2.3.0',
         'cicerone': 'com.github.terrakok:cicerone:7.1',
     ]

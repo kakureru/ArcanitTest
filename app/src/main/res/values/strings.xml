@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ArcanitTest</string>
+    <string name="search_hint">User / Repository</string>
+    <string name="no_results">No results</string>
 </resources>
