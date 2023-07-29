@@ -6,6 +6,6 @@ import org.koin.dsl.module
 
 val appModule = module {
     viewModel {
-        SearchViewModel(getUsersSearchResultUseCase = get(), getReposSearchResultUseCase = get())
+        SearchViewModel(getUserAndRepoSearchResultUseCase = get())
     }
 }

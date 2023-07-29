@@ -3,8 +3,8 @@ package com.example.arcanittest.app.presentation.screens.search.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.arcanittest.app.presentation.adapter.AdapterDelegate
-import com.example.arcanittest.app.presentation.adapter.DelegateItem
+import com.example.arcanittest.app.presentation.screens.search.model.DelegateItem
+import com.example.arcanittest.app.presentation.screens.search.model.RepoDelegateItem
 import com.example.arcanittest.app.presentation.screens.search.model.RepoItem
 import com.example.arcanittest.databinding.CardRepoBinding
 

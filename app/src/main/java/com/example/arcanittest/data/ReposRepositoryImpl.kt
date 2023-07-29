@@ -1,14 +1,19 @@
 package com.example.arcanittest.data
 
+import com.example.arcanittest.data.network.service.ReposService
 import com.example.arcanittest.domain.model.Repo
+import com.example.arcanittest.domain.model.toDomain
 import com.example.arcanittest.domain.repository.ReposRepository
 
-class ReposRepositoryImpl : ReposRepository {
-    override fun getRepos(): List<Repo> {
-        return listOf(
-            Repo(1, "first", 4, "bla bla"),
-            Repo(2, "second", 6, "bla bla"),
-            Repo(3, "third", 9, "bla bla"),
-        )
+class ReposRepositoryImpl(
+    private val reposService: ReposService,
+) : ReposRepository {
+    override suspend fun searchRepos(query: String): List<Repo> {
+        val apiQuery = "$query $IN_QUALIFIER"
+        return reposService.searchRepos(apiQuery, 1, 30).items.map { it.toDomain() }
+    }
+
+    companion object {
+        const val IN_QUALIFIER = "in:name"
     }
 }

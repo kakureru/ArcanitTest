@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.arcanittest.app.presentation.adapter.AdapterDelegate
-import com.example.arcanittest.app.presentation.adapter.DelegateItem
+import com.example.arcanittest.app.presentation.screens.search.model.DelegateItem
+import com.example.arcanittest.app.presentation.screens.search.model.UserDelegateItem
 import com.example.arcanittest.app.presentation.screens.search.model.UserItem
 import com.example.arcanittest.databinding.CardUserBinding
 

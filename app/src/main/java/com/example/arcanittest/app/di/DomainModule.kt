@@ -1,20 +1,13 @@
 package com.example.arcanittest.app.di
 
-import com.example.arcanittest.domain.usecase.GetReposSearchResultUseCase
-import com.example.arcanittest.domain.usecase.GetUsersSearchResultUseCase
+import com.example.arcanittest.domain.usecase.GetUserAndRepoSearchResultUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-
     factory {
-        GetUsersSearchResultUseCase(
-            usersRepository = get(),
-        )
-    }
-
-    factory {
-        GetReposSearchResultUseCase(
+        GetUserAndRepoSearchResultUseCase(
             reposRepository = get(),
+            usersRepository = get(),
         )
     }
 }

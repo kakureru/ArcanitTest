@@ -9,10 +9,10 @@ import org.koin.dsl.module
 val dataModule = module {
 
     factory<UsersRepository> {
-        UsersRepositoryImpl()
+        UsersRepositoryImpl(usersService = get())
     }
 
     factory<ReposRepository> {
-        ReposRepositoryImpl()
+        ReposRepositoryImpl(reposService = get())
     }
 }
