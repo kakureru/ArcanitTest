@@ -11,7 +11,7 @@ import com.example.arcanittest.app.presentation.collectFlowSafely
 import com.example.arcanittest.app.presentation.screens.content.adapter.ContentAdapter
 import com.example.arcanittest.app.presentation.screens.content.adapter.ContentCallback
 import com.example.arcanittest.databinding.FragmentContentBinding
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -44,7 +44,7 @@ class ContentFragment : Fragment() {
         vm.uiState.render()
     }
 
-    private fun StateFlow<ContentUiState>.render() = collectFlowSafely {
+    private fun Flow<ContentUiState>.render() = collectFlowSafely {
         collect { state ->
             with(binding) {
                 path.text = state.path

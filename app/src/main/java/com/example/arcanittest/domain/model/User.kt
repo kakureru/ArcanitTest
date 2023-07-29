@@ -7,6 +7,7 @@ data class User (
     val avatarUrl: String?,
     val login: String,
     val score: Float,
+    val url: String,
 ) : Searchable {
     override fun searchableField(): String = login
 }
@@ -16,4 +17,5 @@ fun UserDto.toDomain() = User(
     avatarUrl = avatarUrl,
     login = login,
     score = score,
+    url = url,
 )

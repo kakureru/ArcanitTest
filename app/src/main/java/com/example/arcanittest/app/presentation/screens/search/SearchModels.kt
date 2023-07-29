@@ -10,3 +10,7 @@ data class SearchUiState(
     val isSearchFieldEnabled: Boolean = true,
     val searchResult: List<DelegateItem> = emptyList(),
 )
+
+sealed class SearchEffect {
+    class OpenUserPage(val url: String) : SearchEffect()
+}

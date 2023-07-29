@@ -24,7 +24,7 @@ class FileViewModel(
 
     private fun loadFile() = viewModelScope.launch {
         _uiState.update { it.copy(isLoading = true) }
-        val url = reposRepository.getFile(repoId, path).url
-        _uiState.update { it.copy(url = url, isLoading = false ) }
+        val file = reposRepository.getFile(repoId, path)
+        _uiState.update { it.copy(url = file.url, isLoading = false ) }
     }
 }

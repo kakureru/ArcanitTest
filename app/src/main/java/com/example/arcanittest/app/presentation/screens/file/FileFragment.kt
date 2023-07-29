@@ -9,7 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.arcanittest.app.presentation.collectFlowSafely
 import com.example.arcanittest.databinding.FragmentFileBinding
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -33,7 +33,7 @@ class FileFragment : Fragment() {
         vm.uiState.render()
     }
 
-    private fun StateFlow<FileUiState>.render() = collectFlowSafely {
+    private fun Flow<FileUiState>.render() = collectFlowSafely {
         collect { state ->
             with(binding) {
                 loader.isVisible = state.isLoading

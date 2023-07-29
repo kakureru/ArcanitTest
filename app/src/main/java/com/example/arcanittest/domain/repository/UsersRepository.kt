@@ -4,4 +4,5 @@ import com.example.arcanittest.domain.model.User
 
 interface UsersRepository {
     suspend fun searchUsers(query: String): List<User>
+    suspend fun getUser(userId: Long): User
 }

@@ -11,6 +11,7 @@ val appModule = module {
     viewModel {
         SearchViewModel(
             router = get(),
+            usersRepository = get(),
             getUserAndRepoSearchResultUseCase = get(),
         )
     }

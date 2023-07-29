@@ -7,4 +7,5 @@ data class UserDto(
     @SerializedName("avatar_url") val avatarUrl: String?,
     @SerializedName("login") val login: String,
     @SerializedName("score") val score: Float,
+    @SerializedName("html_url") val url: String,
 )

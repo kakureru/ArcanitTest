@@ -13,6 +13,8 @@ class UsersRepositoryImpl(
         return usersService.searchUsers(apiQuery, 1, 30).items.map { it.toDomain() }
     }
 
+    override suspend fun getUser(userId: Long): User = usersService.getUser(userId).toDomain()
+
     companion object {
         const val IN_QUALIFIER = "in:login"
     }
