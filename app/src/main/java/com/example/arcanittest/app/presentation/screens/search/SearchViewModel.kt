@@ -3,9 +3,9 @@ package com.example.arcanittest.app.presentation.screens.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.arcanittest.app.presentation.navigation.Screens
-import com.example.arcanittest.app.presentation.screens.search.model.DelegateItem
-import com.example.arcanittest.app.presentation.screens.search.model.RepoDelegateItem
-import com.example.arcanittest.app.presentation.screens.search.model.UserDelegateItem
+import com.example.arcanittest.app.presentation.adapter.DelegateItem
+import com.example.arcanittest.app.presentation.screens.search.adapter.RepoDelegateItem
+import com.example.arcanittest.app.presentation.screens.search.adapter.UserDelegateItem
 import com.example.arcanittest.app.presentation.screens.search.model.toUI
 import com.example.arcanittest.domain.model.Repo
 import com.example.arcanittest.domain.model.Searchable

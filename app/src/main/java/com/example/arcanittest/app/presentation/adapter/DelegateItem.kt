@@ -1,4 +1,4 @@
-package com.example.arcanittest.app.presentation.screens.search.model
+package com.example.arcanittest.app.presentation.adapter
 
 interface DelegateItem {
     fun content(): Any

@@ -3,6 +3,7 @@ package com.example.arcanittest.app.presentation.screens.content
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.arcanittest.app.presentation.navigation.Screens
+import com.example.arcanittest.domain.model.ContentType
 import com.example.arcanittest.domain.repository.ReposRepository
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,8 +27,12 @@ class ContentViewModel(
         loadContent()
     }
 
-    fun onContentClick(contentPath: String) {
-        router.navigateTo(Screens.Content(repoId, contentPath))
+    // Плохое решение, теряется единый источник правды, я не успел придумать как сделать лучше, надеюсь это не очень страшно..
+    fun onContentClick(item: ContentItem) {
+        when(item.type) {
+            ContentType.FILE -> router.navigateTo(Screens.File(repoId, item.path))
+            ContentType.DIR -> router.navigateTo(Screens.Content(repoId, item.path))
+        }
     }
 
     private fun loadContent() = viewModelScope.launch {

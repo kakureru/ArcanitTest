@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.example.arcanittest.app.presentation.collectFlowSafely
-import com.example.arcanittest.app.presentation.screens.search.adapter.DelegateListAdapter
+import com.example.arcanittest.app.presentation.adapter.DelegateListAdapter
 import com.example.arcanittest.app.presentation.screens.search.adapter.RepoCallback
 import com.example.arcanittest.app.presentation.screens.search.adapter.RepoDelegate
 import com.example.arcanittest.app.presentation.screens.search.adapter.UserCallback

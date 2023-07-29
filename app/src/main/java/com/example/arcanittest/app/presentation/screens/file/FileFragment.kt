@@ -1,4 +1,4 @@
-package com.example.arcanittest.app.presentation.screens.content
+package com.example.arcanittest.app.presentation.screens.file
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,62 +8,45 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.arcanittest.app.presentation.collectFlowSafely
-import com.example.arcanittest.app.presentation.screens.content.adapter.ContentAdapter
-import com.example.arcanittest.app.presentation.screens.content.adapter.ContentCallback
-import com.example.arcanittest.databinding.FragmentContentBinding
+import com.example.arcanittest.databinding.FragmentFileBinding
 import kotlinx.coroutines.flow.StateFlow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class ContentFragment : Fragment() {
+class FileFragment : Fragment() {
 
     private val path: String? by lazy { requireArguments().getString(ARG_PATH) }
     private val repoId: Long by lazy {
         requireArguments().getLong(ARG_REPO_ID, -1L).takeIf { it > 0 } ?: throw IllegalArgumentException()
     }
 
-    private lateinit var binding: FragmentContentBinding
-    private val vm: ContentViewModel by viewModel { parametersOf(repoId, path) }
-
-    private val contentCallback = object : ContentCallback {
-        override fun onClick(item: ContentItem) = vm.onContentClick(item)
-    }
-
-    private val adapter = ContentAdapter(contentCallback)
+    private lateinit var binding: FragmentFileBinding
+    private val vm: FileViewModel by viewModel { parametersOf(repoId, path) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentContentBinding.inflate(inflater, container, false)
+        binding = FragmentFileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding) {
-            content.adapter = adapter
-        }
         vm.uiState.render()
     }
 
-    private fun StateFlow<ContentUiState>.render() = collectFlowSafely {
+    private fun StateFlow<FileUiState>.render() = collectFlowSafely {
         collect { state ->
             with(binding) {
-                path.text = state.path
                 loader.isVisible = state.isLoading
+                state.url?.let { webView.loadUrl(it) }
             }
-            adapter.submitList(state.content)
         }
     }
 
     companion object {
         private const val ARG_PATH = "ARG_PATH"
         private const val ARG_REPO_ID = "ARG_REPO_ID"
-        fun newInstance(repoId: Long): Fragment = ContentFragment().apply {
-            arguments = bundleOf(
-                ARG_REPO_ID to repoId,
-            )
-        }
 
-        fun newInstance(repoId: Long, path: String): Fragment = ContentFragment().apply {
+        fun newInstance(repoId: Long, path: String) = FileFragment().apply {
             arguments = bundleOf(
                 ARG_PATH to path,
                 ARG_REPO_ID to repoId,

@@ -1,6 +1,6 @@
 package com.example.arcanittest.app.presentation.screens.search
 
-import com.example.arcanittest.app.presentation.screens.search.model.DelegateItem
+import com.example.arcanittest.app.presentation.adapter.DelegateItem
 
 data class SearchUiState(
     val isLoading: Boolean = false,

@@ -1,4 +1,7 @@
-package com.example.arcanittest.app.presentation.screens.search.model
+package com.example.arcanittest.app.presentation.screens.search.adapter
+
+import com.example.arcanittest.app.presentation.adapter.DelegateItem
+import com.example.arcanittest.app.presentation.screens.search.model.RepoItem
 
 class RepoDelegateItem(val id: Long, private val value: RepoItem) : DelegateItem {
     override fun content(): Any = value

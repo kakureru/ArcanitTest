@@ -9,11 +9,11 @@ class UsersRepositoryImpl(
     private val usersService: UsersService,
 ) : UsersRepository {
     override suspend fun searchUsers(query: String): List<User> {
-        val apiQuery = "$query $QUALIFIER"
+        val apiQuery = "$query $IN_QUALIFIER"
         return usersService.searchUsers(apiQuery, 1, 30).items.map { it.toDomain() }
     }
 
     companion object {
-        const val QUALIFIER = "in:login"
+        const val IN_QUALIFIER = "in:login"
     }
 }

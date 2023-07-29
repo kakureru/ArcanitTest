@@ -1,10 +1,9 @@
-package com.example.arcanittest.app.presentation.screens.search.adapter
+package com.example.arcanittest.app.presentation.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.arcanittest.app.presentation.screens.search.model.DelegateItem
 
 class DelegateListAdapter : ListAdapter<DelegateItem, RecyclerView.ViewHolder>(DiffCallback) {
 
