@@ -8,7 +8,9 @@ import com.example.arcanittest.app.presentation.screens.search.model.RepoDelegat
 import com.example.arcanittest.app.presentation.screens.search.model.RepoItem
 import com.example.arcanittest.databinding.CardRepoBinding
 
-class RepoDelegate : AdapterDelegate {
+class RepoDelegate(
+    private val repoCallback: RepoCallback,
+) : AdapterDelegate {
 
     inner class RepoViewHolder(private val binding: CardRepoBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: RepoItem) {
@@ -24,7 +26,12 @@ class RepoDelegate : AdapterDelegate {
         RepoViewHolder(CardRepoBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: DelegateItem, position: Int) {
-        (holder as RepoViewHolder).bind(item.content() as RepoItem)
+        val repoItem = item.content() as RepoItem
+        (holder as RepoViewHolder).bind(repoItem)
+        holder.itemView.setOnClickListener {
+            if (holder.adapterPosition != RecyclerView.NO_POSITION)
+                repoCallback.onClick(repoItem.id)
+        }
     }
 
     override fun isOfViewType(item: DelegateItem): Boolean = item is RepoDelegateItem

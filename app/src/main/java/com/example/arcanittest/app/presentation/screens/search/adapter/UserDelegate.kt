@@ -9,7 +9,9 @@ import com.example.arcanittest.app.presentation.screens.search.model.UserDelegat
 import com.example.arcanittest.app.presentation.screens.search.model.UserItem
 import com.example.arcanittest.databinding.CardUserBinding
 
-class UserDelegate : AdapterDelegate {
+class UserDelegate(
+    private val userCallback: UserCallback,
+) : AdapterDelegate {
 
     inner class UserViewHolder(private val binding: CardUserBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: UserItem) {
@@ -25,7 +27,12 @@ class UserDelegate : AdapterDelegate {
         UserViewHolder(CardUserBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: DelegateItem, position: Int) {
-        (holder as UserViewHolder).bind(item.content() as UserItem)
+        val userItem = item.content() as UserItem
+        (holder as UserDelegate.UserViewHolder).bind(userItem)
+        holder.itemView.setOnClickListener {
+            if (holder.adapterPosition != RecyclerView.NO_POSITION)
+                userCallback.onClick(userItem.id)
+        }
     }
 
     override fun isOfViewType(item: DelegateItem): Boolean = item is UserDelegateItem
