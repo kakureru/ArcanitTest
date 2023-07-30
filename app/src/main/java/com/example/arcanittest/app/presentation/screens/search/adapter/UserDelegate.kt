@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.arcanittest.R
 import com.example.arcanittest.app.presentation.adapter.AdapterDelegate
 import com.example.arcanittest.app.presentation.adapter.DelegateItem
 import com.example.arcanittest.app.presentation.screens.search.model.UserItem
@@ -16,7 +17,7 @@ class UserDelegate(
     inner class UserViewHolder(private val binding: CardUserBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: UserItem) {
             with(binding) {
-                avatar.load(item.avatarUrl)
+                avatar.load(item.avatarUrl ?: R.drawable.ic_person)
                 login.text = item.login
                 score.text = item.score
             }

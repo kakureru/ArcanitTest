@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:paddingHorizontal="16dp"
+    android:paddingHorizontal="12dp"
     android:paddingVertical="6dp"
     android:layout_height="wrap_content">
 
@@ -11,11 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:adjustViewBounds="true"
-        tools:src="@drawable/ic_launcher_background" />
+        tools:src="@drawable/ic_folder" />
 
     <TextView
         android:id="@+id/name"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

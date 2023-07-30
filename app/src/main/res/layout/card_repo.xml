@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/default_margin"
+    android:layout_marginVertical="@dimen/card_margin_vertical"
     card_view:cardCornerRadius="@dimen/card_radius"
     card_view:cardElevation="@dimen/card_elevation">
 
@@ -17,24 +19,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            card_view:layout_constraintBottom_toBottomOf="@+id/forks_count"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintTop_toTopOf="@+id/forks_count"
             tools:text="React-android-tetris" />
 
         <TextView
             android:id="@+id/forks_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="12sp"
             android:textStyle="bold"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
-            tools:text="45 Forks" />
+            tools:text="45\nForks" />
 
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            card_view:layout_constraintTop_toBottomOf="@id/name"
+            android:layout_marginTop="4dp"
+            card_view:layout_constraintTop_toBottomOf="@+id/forks_count"
             tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
