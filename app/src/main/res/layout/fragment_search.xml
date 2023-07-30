@@ -61,11 +61,17 @@
             android:id="@+id/search_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/search_hint"
+            android:hint="@string/hint_search"
             android:imeOptions="actionSearch"
             android:inputType="textNoSuggestions"
             android:selectAllOnFocus="true"
             tools:text="Some text" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <include
+        android:id="@+id/error_layout"
+        layout="@layout/error_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

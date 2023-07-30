@@ -51,6 +51,7 @@ class SearchFragment : Fragment() {
             list.adapter = adapter
             searchField.addTextChangedListener { vm.onSearchTextChanged("$it") }
             btnSearch.setOnClickListener { vm.onSearchClick() }
+            errorLayout.btnTryAgain.setOnClickListener { vm.onTryAgainClick() }
         }
         vm.uiState.render()
         vm.effect.handleEffect()
@@ -59,10 +60,13 @@ class SearchFragment : Fragment() {
     private fun Flow<SearchUiState>.render() = collectFlowSafely {
         collect { state ->
             with(binding) {
-                adapter.submitList(state.searchResult)
+                adapter.submitList(state.data)
+                list.isVisible = state.error == null
                 searchField.isEnabled = state.isSearchFieldEnabled
                 btnSearch.isEnabled = state.isSearchButtonEnabled
                 loader.isVisible = state.isLoading
+                errorLayout.root.isVisible = state.error != null
+                state.error?.let { errorLayout.message.setText(it.msg) }
             }
         }
     }

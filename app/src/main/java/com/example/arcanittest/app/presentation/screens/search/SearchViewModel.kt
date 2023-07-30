@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.arcanittest.app.presentation.adapter.DelegateItem
 import com.example.arcanittest.app.presentation.navigation.Screens
+import com.example.arcanittest.app.presentation.runCatchingNonCancellation
 import com.example.arcanittest.app.presentation.screens.search.adapter.RepoDelegateItem
 import com.example.arcanittest.app.presentation.screens.search.adapter.UserDelegateItem
 import com.example.arcanittest.app.presentation.screens.search.model.toUI
@@ -38,10 +39,8 @@ class SearchViewModel(
         _uiState.update { it.copy(query = text, isSearchButtonEnabled = text.isInputCorrect()) }
     }
 
-    fun onSearchClick() = viewModelScope.launch {
-        _uiState.update { it.copy(isLoading = true, isSearchButtonEnabled = false, isSearchFieldEnabled = false) }
-        val result = getUserAndRepoSearchResultUseCase(uiState.value.query).mapNotNull { it.toDelegateItemOrNull() }
-        _uiState.update { it.copy(searchResult = result, isLoading = false, isSearchButtonEnabled = true, isSearchFieldEnabled = true) }
+    fun onSearchClick() {
+        performSearch(uiState.value.query)
     }
 
     fun onRepoClick(repoId: Long) {
@@ -50,10 +49,34 @@ class SearchViewModel(
 
     fun onUserClick(userId: Long) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-            val user = usersRepository.getUser(userId)
-            _effect.emit(SearchEffect.OpenUserPage(user.url))
-            _uiState.update { it.copy(isLoading = false) }
+            runCatchingNonCancellation {
+                _uiState.update { it.copy(isLoading = true) }
+                val user = usersRepository.getUser(userId)
+                _effect.emit(SearchEffect.OpenUserPage(user.url))
+                _uiState.update { it.copy(isLoading = false) }
+            }.onFailure {
+                _uiState.update { it.copy(isLoading = false, error = SearchError.UserLoading(userId = userId)) }
+            }
+        }
+    }
+
+    fun onTryAgainClick() {
+        val error = uiState.value.error
+        _uiState.update { it.copy(error = null) }
+        when(error) {
+            is SearchError.Search -> performSearch(error.query)
+            is SearchError.UserLoading -> onUserClick(error.userId)
+            null -> Unit
+        }
+    }
+
+    private fun performSearch(query: String) = viewModelScope.launch {
+        runCatchingNonCancellation {
+            _uiState.update { it.copy(isLoading = true, isSearchButtonEnabled = false, isSearchFieldEnabled = false) }
+            val result = getUserAndRepoSearchResultUseCase(query).mapNotNull { it.toDelegateItemOrNull() }
+            _uiState.update { it.copy(data = result, isLoading = false, isSearchButtonEnabled = true, isSearchFieldEnabled = true) }
+        }.onFailure {
+            _uiState.update { it.copy(isLoading = false, error = SearchError.Search(query = query)) }
         }
     }
 
@@ -65,7 +88,6 @@ class SearchViewModel(
             is Repo -> this.toDelegateItem()
             else -> null
         }
-
     private fun User.toDelegateItem() = UserDelegateItem(id = id, value = this.toUI())
     private fun Repo.toDelegateItem() = RepoDelegateItem(id = id, value = this.toUI())
 }
