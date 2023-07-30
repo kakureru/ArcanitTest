@@ -6,13 +6,33 @@ import com.example.arcanittest.domain.model.GitFile
 import com.example.arcanittest.domain.model.Repo
 import com.example.arcanittest.domain.model.toDomain
 import com.example.arcanittest.domain.repository.ReposRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 class ReposRepositoryImpl(
     private val reposService: ReposService,
 ) : ReposRepository {
-    override suspend fun searchRepos(query: String): List<Repo> {
+
+    private val inMemoryCache = mutableListOf<Repo>()
+    private val searchResults = MutableSharedFlow<List<Repo>>(replay = 1)
+    private var lastRequestedPage = GITHUB_STARTING_PAGE_INDEX
+    private var requestInProgress = false
+
+    override fun getSearchResultStream(): Flow<List<Repo>> {
+        lastRequestedPage = GITHUB_STARTING_PAGE_INDEX
+        inMemoryCache.clear()
+        return searchResults
+    }
+
+    override suspend fun requestMore(query: String, pageSize: Int) {
+        if (requestInProgress) return
+        requestInProgress = true
         val apiQuery = "$query $IN_QUALIFIER"
-        return reposService.searchRepos(apiQuery, 1, 30).items.map { it.toDomain() }
+        val repos = reposService.searchRepos(apiQuery, lastRequestedPage, pageSize).items.map { it.toDomain() }
+        inMemoryCache.addAll(repos)
+        searchResults.emit(inMemoryCache)
+        lastRequestedPage++
+        requestInProgress = false
     }
 
     override suspend fun getContent(repoId: Long, path: String?): List<Content> {
@@ -26,6 +46,7 @@ class ReposRepositoryImpl(
     }
 
     companion object {
-        const val IN_QUALIFIER = "in:name"
+        private const val IN_QUALIFIER = "in:name"
+        private const val GITHUB_STARTING_PAGE_INDEX = 1
     }
 }

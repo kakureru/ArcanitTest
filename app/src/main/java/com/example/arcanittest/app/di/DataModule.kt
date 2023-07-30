@@ -8,11 +8,11 @@ import org.koin.dsl.module
 
 val dataModule = module {
 
-    factory<UsersRepository> {
+    single<UsersRepository> {
         UsersRepositoryImpl(usersService = get())
     }
 
-    factory<ReposRepository> {
+    single<ReposRepository> {
         ReposRepositoryImpl(reposService = get())
     }
 }

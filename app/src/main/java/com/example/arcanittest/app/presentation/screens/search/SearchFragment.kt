@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.arcanittest.R
 import com.example.arcanittest.app.presentation.adapter.DelegateListAdapter
 import com.example.arcanittest.app.presentation.collectFlowSafely
@@ -49,6 +51,7 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             list.adapter = adapter
+            list.setupScrollListener()
             searchField.addTextChangedListener { vm.onSearchTextChanged("$it") }
             btnSearch.setOnClickListener { vm.onSearchClick() }
             errorLayout.btnTryAgain.setOnClickListener { vm.onTryAgainClick() }
@@ -77,6 +80,19 @@ class SearchFragment : Fragment() {
                 is SearchEffect.OpenUserPage -> openUserPage(effect.url)
             }
         }
+    }
+
+    private fun RecyclerView.setupScrollListener() {
+        val lm = this.layoutManager as LinearLayoutManager
+        this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val visibleItemCount = lm.childCount
+                val lastVisibleItem = lm.findLastVisibleItemPosition()
+                val totalItemCount = lm.itemCount
+                vm.onScroll(visibleItemCount, lastVisibleItem, totalItemCount)
+            }
+        })
     }
 
     private fun openUserPage(url: String) {

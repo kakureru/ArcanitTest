@@ -1,5 +1,6 @@
 package com.example.arcanittest.app.di
 
+import com.example.arcanittest.BuildConfig
 import com.example.arcanittest.data.network.service.ReposService
 import com.example.arcanittest.data.network.service.UsersService
 import okhttp3.OkHttpClient
@@ -48,5 +49,12 @@ private fun provideRetrofit(okHttpClient: OkHttpClient) = Retrofit
 
 private fun provideHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor) = OkHttpClient
     .Builder()
+    .addInterceptor { chain ->
+        val requestBuilder = chain
+            .request()
+            .newBuilder()
+        requestBuilder.addHeader("Authorization", "Bearer ${BuildConfig.API_TOKEN}")
+        return@addInterceptor chain.proceed(requestBuilder.build())
+    }
     .addInterceptor(httpLoggingInterceptor)
     .build()

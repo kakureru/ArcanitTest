@@ -8,6 +8,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
+/**
+ * безопасно получаем события
+ */
 fun LifecycleOwner.collectFlowSafely(
     lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
     collect: suspend () -> Unit
@@ -19,6 +22,9 @@ fun LifecycleOwner.collectFlowSafely(
     }
 }
 
+/**
+ * ловим всё кроме CancellationException
+ */
 inline fun <R> runCatchingNonCancellation(block: () -> R): Result<R> {
     return try {
         Result.success(block())

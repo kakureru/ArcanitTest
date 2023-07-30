@@ -14,6 +14,10 @@ android {
         targetSdk buildConfig.targetSdk
         versionCode 1
         versionName "1.0"
+
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+        buildConfigField "String", "API_TOKEN", "\"${properties.getProperty("API_TOKEN")}\""
     }
 
     buildTypes {
