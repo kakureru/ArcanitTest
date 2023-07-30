@@ -40,6 +40,7 @@ class ContentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             content.adapter = adapter
+            errorLayout.btnTryAgain.setOnClickListener { vm.onTryAgainClick() }
         }
         vm.uiState.render()
     }
@@ -47,10 +48,13 @@ class ContentFragment : Fragment() {
     private fun Flow<ContentUiState>.render() = collectFlowSafely {
         collect { state ->
             with(binding) {
+                adapter.submitList(state.content)
+                content.isVisible = state.error == null
                 path.text = state.path
                 loader.isVisible = state.isLoading
+                errorLayout.root.isVisible = state.error != null
+                state.error?.let { errorLayout.message.setText(it) }
             }
-            adapter.submitList(state.content)
         }
     }
 

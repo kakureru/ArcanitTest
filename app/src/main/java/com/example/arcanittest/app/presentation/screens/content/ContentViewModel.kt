@@ -2,7 +2,9 @@ package com.example.arcanittest.app.presentation.screens.content
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.arcanittest.R
 import com.example.arcanittest.app.presentation.navigation.Screens
+import com.example.arcanittest.app.presentation.runCatchingNonCancellation
 import com.example.arcanittest.domain.model.ContentType
 import com.example.arcanittest.domain.repository.ReposRepository
 import com.github.terrakok.cicerone.Router
@@ -27,7 +29,10 @@ class ContentViewModel(
         loadContent()
     }
 
-    // Плохое решение, теряется единый источник правды, я не успел придумать как сделать лучше, надеюсь это не очень страшно..
+    /**
+     * Плохо, что берем type из ui модели, теряется единый источник правды,
+     * но я не успел придумать как сделать лучше, надеюсь это не очень страшно...
+      */
     fun onContentClick(item: ContentItem) {
         when(item.type) {
             ContentType.FILE -> router.navigateTo(Screens.File(repoId, item.path))
@@ -35,10 +40,19 @@ class ContentViewModel(
         }
     }
 
+    fun onTryAgainClick() {
+        _uiState.update { it.copy(error = null) }
+        loadContent()
+    }
+
     private fun loadContent() = viewModelScope.launch {
-        _uiState.update { it.copy(isLoading = true) }
-        val content = reposRepository.getContent(repoId, path).map { it.toUI() }
-        _uiState.update { it.copy(content = content, isLoading = false) }
+        runCatchingNonCancellation {
+            _uiState.update { it.copy(isLoading = true) }
+            val content = reposRepository.getContent(repoId, path).map { it.toUI() }
+            _uiState.update { it.copy(content = content, isLoading = false) }
+        }.onFailure {
+            _uiState.update { it.copy(isLoading = false, error = R.string.error_content_loading) }
+        }
     }
 
     companion object {
