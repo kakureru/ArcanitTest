@@ -30,6 +30,7 @@ class FileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.errorLayout.btnTryAgain.setOnClickListener { vm.onTryAgainClick() }
         vm.uiState.render()
     }
 
@@ -38,6 +39,9 @@ class FileFragment : Fragment() {
             with(binding) {
                 loader.isVisible = state.isLoading
                 state.url?.let { webView.loadUrl(it) }
+                webView.isVisible = state.error == null
+                errorLayout.root.isVisible = state.error != null
+                state.error?.let { errorLayout.message.setText(it) }
             }
         }
     }

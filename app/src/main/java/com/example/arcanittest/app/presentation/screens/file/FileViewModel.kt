@@ -2,6 +2,8 @@ package com.example.arcanittest.app.presentation.screens.file
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.arcanittest.R
+import com.example.arcanittest.app.presentation.runCatchingNonCancellation
 import com.example.arcanittest.domain.repository.ReposRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,8 +25,17 @@ class FileViewModel(
     }
 
     private fun loadFile() = viewModelScope.launch {
-        _uiState.update { it.copy(isLoading = true) }
-        val file = reposRepository.getFile(repoId, path)
-        _uiState.update { it.copy(url = file.url, isLoading = false ) }
+        runCatchingNonCancellation {
+            _uiState.update { it.copy(isLoading = true) }
+            val file = reposRepository.getFile(repoId, path)
+            _uiState.update { it.copy(url = file.url, isLoading = false ) }
+        }.onFailure {
+            _uiState.update { it.copy(isLoading = false, error = R.string.error_file_loading) }
+        }
+    }
+
+    fun onTryAgainClick() {
+        _uiState.update { it.copy(error = null) }
+        loadFile()
     }
 }
